@@ -1,0 +1,159 @@
+---
+title: "Ryan Tillis - Data Science - Regression Models - Quiz 3 - Coursera"
+author: <a href="http://www.ryantillis.com"> Ryan Tillis </a>
+date: "August 4, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Quiz 3
+
+This is Quiz 4 from Coursera's Regression Models class within the Data Science Specialization. This publication is intended as a learning resource, all answers are documented and explained.
+
+<hr>
+
+<font size="+2">**1.**  </font>Consider the space shuttle data ?𝚜𝚑𝚞𝚝𝚝𝚕𝚎 in the 𝙼𝙰𝚂𝚂 library. Consider modeling the use of the autolander as the outcome (variable name 𝚞𝚜𝚎). Fit a logistic regression model with autolander (variable auto) use (labeled as "auto" 1) versus not (0) as predicted by wind sign (variable wind). Give the estimated odds ratio for autolander use comparing head winds, labeled as "head" in the variable headwind (numerator) to tail winds (denominator).
+
+<hr>
+
+* <font size="+1">**Answer:** -6.071</font>
+
+<hr>
+
+#####Explanation:
+R assumes the first level of the factor is the reference level (4 cylinder). The coefficients give the betas for each factor. Changing from a 4 cyclinder engine to an 8 cyclinder loses 6 mpg holding weight fixed.
+
+```{r Question 1}
+#Loading and examining the Data
+data(mtcars)
+head(mtcars)
+#Fitting model
+fit <- lm(mpg ~ factor(cyl) + wt,mtcars)
+summary(fit)$coef
+#Selecting coefficient
+summary(fit)$coef[3,1]
+```
+
+<hr>
+<font size="+2">**2.**  </font> Consider the previous problem. Give the estimated odds ratio for autolander use comparing head winds (numerator) to tail winds (denominator) adjusting for wind strength from the variable magn.
+<hr>
+
+* <font size="+1">**Holding weight constant, cylinder appears to have less of an impact on mpg than if weight is disregarded.**</font>
+
+<hr>
+
+#####Explanation:
+
+The unadjusted beta values are higher. Weight is confounding significantly.
+
+```{r Q2}
+fit <- lm(mpg ~factor(cyl), mtcars)
+afit <- lm(mpg~factor(cyl) + wt,mtcars)
+
+summary(fit)$coef
+summary(afit)$coef
+```
+<hr>
+
+<font size="+2">3.  </font> If you fit a logistic regression model to a binary variable, for example use of the autolander, then fit a logistic regression model for one minus the outcome (not using the autolander) what happens to the coefficients?
+
+<hr>
+
+* <font size="+1">**The P-value is larger than 0.05. So, according to our criterion, we would fail to reject, which suggests that the interaction terms may not be necessary.**</font>
+
+<hr>
+
+```{r Question 3}
+fit <- lm(mpg ~factor(cyl)+wt, mtcars)
+Ifit <- lm(mpg~factor(cyl)*wt,mtcars)
+anova(fit,Ifit)
+```
+
+<hr>
+
+<font size="+2">**4.**  </font> Consider the insect spray data 𝙸𝚗𝚜𝚎𝚌𝚝𝚂𝚙𝚛𝚊𝚢𝚜. Fit a Poisson model using spray as a factor level. Report the estimated relative rate comapring spray A (numerator) to spray B (denominator). 
+
+<hr>
+
+* <font size="+1">**The estimated expected change in MPG per one ton increase in weight for a specific number of cylinders (4, 6, 8).**</font>
+
+<hr>
+
+#####Explanation:
+
+Mtcars reports the weight in units of 1000 lbs. Using I(wt*.5) doubles the weight coefficient from the previous model. This reflects a 2000 lbs (1 ton) increase holding the factor variable fixed.
+
+```{r Question 4}
+summary(fit)
+summary(fit4)
+```
+
+<hr>
+
+<font size="+2">5.  </font> Consider a Poisson glm with an offset, t. So, for example, a model of the form 𝚐𝚕𝚖(𝚌𝚘𝚞𝚗𝚝 ~ 𝚡 + 𝚘𝚏𝚏𝚜𝚎𝚝(𝚝), 𝚏𝚊𝚖𝚒𝚕𝚢 = 𝚙𝚘𝚒𝚜𝚜𝚘𝚗) where 𝚡 is a factor variable comparing a treatment (1) to a control (0) and 𝚝 is the natural log of a monitoring time. What is impact of the coefficient for 𝚡 if we fit the model 𝚐𝚕𝚖(𝚌𝚘𝚞𝚗𝚝 ~ 𝚡 + 𝚘𝚏𝚏𝚜𝚎𝚝(𝚝𝟸), 𝚏𝚊𝚖𝚒𝚕𝚢 = 𝚙𝚘𝚒𝚜𝚜𝚘𝚗) where 𝟸 <- 𝚕𝚘𝚐(𝟷𝟶) + 𝚝? In other words, what happens to the coefficients if we change the units of the offset variable. (Note, adding log(10) on the log scale is multiplying by 10 on the original scale.)
+
+<hr>
+
+* <font size="+1">**0.9946**</font>
+
+<hr>
+
+#####Explanation:
+
+Generate linear model, use R to compute hat values. Cook's distance shows point of interest.
+
+```{r Question 5}
+fit5 <- lm(y~x)
+hatvalues(fit5)
+plot(fit5, which = 4)
+```
+
+<hr>
+
+<font size="+2">**6.**  </font> Consider the data
+```{r set2}
+x <- -5:5
+y <- c(5.12, 3.93, 2.67, 1.87, 0.52, 0.08, 0.93, 2.05, 2.54, 3.87, 4.97)
+```
+Using a knot point at 0, fit a linear model that looks like a hockey stick with two lines meeting at x=0. Include an intercept term, x and the knot point term. What is the estimated slope of the line after 0?
+
+<hr>
+
+* <font size="+1">**-134**</font>
+
+<hr>
+
+#####Explanation:
+
+Generate linear model, use R to compute dfbeta values.
+
+```{r Question 6}
+fit6 <- lm(y~x)
+dfbetas(fit6)
+```
+
+
+<hr>
+
+<font size="+2">**7.**  </font> Consider a regression relationship between Y and X with and without adjustment for a third variable Z. Which of the following is true about comparing the regression coefficient between Y and X with and without adjustment for Z.
+
+<hr>
+
+* <font size="+1">**It is possible for the coefficient to reverse sign after adjustment. For example, it can be strongly significant and positive before adjustment and strongly significant and negative after adjustment.**</font>
+
+<hr>
+#####Explanation:
+
+This is an example of Simpsons paradox and the importance of model selection. Below is an example from the swiss dataset which shows the Beta value flipping when all variables are included. Agriculture is highly correlated with education. If you take out this correlation effect the coefficient flips.
+
+```{r Question 7}
+data(swiss)
+summary(lm(Fertility~Agriculture,data=swiss))$coefficients
+summary(lm(Fertility~., swiss))
+```
+
+<hr>
+Check out my website at: <http://www.ryantillis.com/>
