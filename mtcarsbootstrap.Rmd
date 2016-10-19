@@ -1,0 +1,64 @@
+---
+title: "MtcarsBootstrap"
+author: "Ryan Tillis"
+date: "October 18, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+##Bootstrapping and Permutation Testing
+
+The standard error is high
+
+```{r permutation testing}
+x <- mtcars$mpg
+n <- length(x)
+B<-10000
+resamples <- matrix(sample(x,n*B,replace = TRUE),B,n)
+resampledMedians <- apply(resamples,1,median)
+
+permy <- mtcars$mpg
+permx <- mtcars$am
+
+group <- factor(mtcars$am)
+testStat <- function(w,g) {mean(w[g==1])-mean(w[g==0])}
+
+observedStat <- testStat(permy, group)
+permutations <- sapply(1:10000, function(i) testStat(permy, sample(group)))
+
+mean(permutations > observedStat)
+
+hist(permutations)
+abline(v = observedStat)
+
+
+```
+
+```{r pressure}
+summary(fitall)
+#$coef[8,2]/summary(fitall)$coef[8,1]
+
+x <- mtcars$mpg
+n <- length(x)
+B<-10000
+resamples <- matrix(sample(x,n*B,replace = TRUE),B,n)
+resampledMedians <- apply(resamples,1,median)
+
+b.median <- function(data, num) {
+       resamples <- lapply(1:num, function(i) sample(data, replace=T))
+       r.median <- sapply(resamples, median)
+       std.err <- sqrt(var(r.median))
+       list(std.err=std.err, resamples=resamples, medians=r.median)   
+}
+
+
+```

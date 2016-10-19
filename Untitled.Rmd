@@ -1,0 +1,31 @@
+---
+title: "Regression Models Course Project"
+author: <a href="http://www.ryantillis.com"> Ryan Tillis </a>
+date: "June 16, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+In this project we explore the relationship between a set of variables and miles per gallon (MPG) (outcome) in the mtcars dataset from the "datasets"" package. We are particularly interested in the following two questions:
+
+“Is an automatic or manual transmission better for MPG”
+"Quantify the MPG difference between automatic and manual transmissions"code chunk like this:
+
+```{r cars}
+require(datasets); require(plyr); require(ggplot2); require(GGally)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
