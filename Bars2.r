@@ -3,18 +3,23 @@
 
 memdex <- null
 fitmem <- null
-bars <- function(outcome,regressors) {
+bars <- function(outcome,regressor, others) {
+       
+       if (class(outcome)=="character" && class(regressors)=="character"){
+              
+              next}
+              
+       else{stop}       
+       
        #Removing mpg and am from regressor list since they are necessary for our purposes
-       regressors <- names(mtcars)[c(2:8,10:11)]
+       regressors <- names(others)
        
        #Generating a binary matrix for using each regressor or not in a grid matrix
-       usematrix <- expand.grid(c(TRUE,FALSE), c(TRUE,FALSE),
-                             c(TRUE,FALSE), c(TRUE,FALSE),c(TRUE,FALSE), c(TRUE,FALSE),
-                             c(TRUE,FALSE), c(TRUE,FALSE)) 
+       usematrix <- expand.grid(rep(c(TRUE,FALSE), len(regressors)) 
        
-       Models <- apply(usematrix, 1, function(x) as.formula(paste(c("mpg ~ am", regressors[x]), collapse=" + ")))
+       Models <- apply(usematrix, 1, function(x) as.formula(paste(c(paste("mpg", " ~ ", "am"), regressors[x]), collapse=" + "))
        
-       df <- apply(Models,lm,data =mtcars)
+       df <- lapply(Models,lm,data =mtcars)
        
        for (i in 1:256){
               if (summary(df[[i]])$adj.r.squared > fitmem) {
@@ -24,6 +29,3 @@ bars <- function(outcome,regressors) {
               fitmem
               memdex
        }
-}
-
-summary(fit)$adj.r.squared

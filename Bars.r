@@ -14,7 +14,7 @@ bars <- function(outcome,regressors) {
        
        Models <- apply(usematrix, 1, function(x) as.formula(paste(c("mpg ~ am", regressors[x]), collapse=" + ")))
        
-       df <- apply(Models,lm,data =mtcars)
+       df <- lapply(Models,lm,data =mtcars)
        
        for (i in 1:256){
               if (summary(df[[i]])$adj.r.squared > fitmem) {
