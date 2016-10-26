@@ -1,0 +1,120 @@
+---
+title: "Ryan Tillis - Data Science - Regression Models - Optional Quiz - Coursera"
+author: <a href="http://www.ryantillis.com"> Ryan Tillis </a>
+date: "August 18, 2016"
+output: github_document
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Optional Quiz 4
+
+This is the optional quiz from week 3 of Coursera's Regression Models class within the Data Science Specialization.
+
+<hr>
+
+<font size="+2">**1.**  </font>We are conducting research on the ways that people use data analysis and data science tools. Your participation in this non-graded and completely optional peer assessment will be part of that research. We will not collect any personally identifiable information about you for the purposes of this research and only aggregated totals of responses to questions will be reported. The potential risks to you are small. The potential benefits to the community of data scientists, developers, and professors are very high – we will be able to figure out which methods work and which methods do not. This exercise is 100% optional and will not have any influence whatsoever on your grade in the class. Thanks for considering helping us learn about data science!
+
+Jeff + Roger + Brian
+
+------------------------------------------------------
+
+It has been widely noted that there is a relationship between x1 and y. We are interested in studying the magnitude of this relationship and reporting results to the president of the company. Using the data available at
+
+<https://d18ky98rnyall9.cloudfront.net/_cf0fd3361e05f5be5304b07b771bad48_company_data.csv?Expires=1477612800&Signature=Svl8GrS17gp9QlXNzbmIA80TtbrhtYI1EEBSxI4EQiop44bdTQkR0I9FMac1llnlHoUckeSauqmbybwDOv5-9c5aJia3K7TjLpgskRokcc5lKH0own0uWIr2H6A9-YO1Baokah6s3fJk-f3GbsNM-tDOqJOe2iY7fg0NMZGL328_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A>
+
+Use a linear regression model to investigate this relationship.
+
+Would you be confident telling the company president that there is a meaningful relationship between x1 and y?
+
+<hr>
+
+* <font size="+1">**No**</font>
+
+<hr>
+
+
+```{r Question 1}
+```
+
+<hr>
+<font size="+2">**2.**  </font> Report the estimated coefficient for x1 from your model to 6 significant digits.
+
+<hr>
+
+* <font size="+1">**4.03520**</font>
+
+<hr>
+
+#####Explanation:
+
+
+
+```{r Q2}
+
+```
+<hr>
+
+<font size="+2">3.  </font> Report the 95% confidence interval for the coefficient for x1 from your model. Use 6 significant digits for both the lower and upper bounds. Report it in the format:
+
+(Lower Bound, Upper Bound)
+<hr>
+
+* <font size="+1">**3.915693 4.154714**</font>
+
+<hr>
+
+#####Explanation:
+
+
+```{r Question 3}
+```
+
+<hr>
+
+<font size="+2">**4.**  </font> Report the p-value associated with the coefficient for x1 from your model to 6 significant digits. Use scientific notation.
+
+<hr>
+
+* <font size="+1">**9.061134e-249**</font>
+
+<hr>
+
+#####Explanation:
+
+
+```{r Question 4}
+```
+
+<hr>
+
+<font size="+2">5.  </font> Copy and paste the code that you used for your analysis, including any exploratory analysis.
+
+<hr>
+
+* <font size="+1">****</font>
+
+<hr>
+
+#####Explanation:
+
+
+
+```{r Question 5}
+URL <- "https://d18ky98rnyall9.cloudfront.net/_cf0fd3361e05f5be5304b07b771bad48_company_data.csv?Expires=1477612800&Signature=Svl8GrS17gp9QlXNzbmIA80TtbrhtYI1EEBSxI4EQiop44bdTQkR0I9FMac1llnlHoUckeSauqmbybwDOv5-9c5aJia3K7TjLpgskRokcc5lKH0own0uWIr2H6A9-YO1Baokah6s3fJk-f3GbsNM-tDOqJOe2iY7fg0NMZGL328_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A"
+download.file(URL, destfile = "opt.csv")
+data <- read.csv("opt.csv")
+head(data)
+
+fit_x1 <- lm(y~x1,data=data)
+fit_all <- lm(y~., data=data)
+summary(fit_x1)
+summary(fit_all)
+summary(fit_all)$coef
+summary(fit_all)$coef[2]+c(-1,1)*qt(.975,496)*summary(fit_all)$coef[6]
+```
+
+<hr>
+Check out my website at: <http://www.ryantillis.com/>
